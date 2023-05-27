@@ -1,0 +1,181 @@
+{
+  "project_info": {
+    "project_number": "111813854286",
+    "firebase_url": "https://mototransflutter-default-rtdb.firebaseio.com",
+    "project_id": "mototransflutter",
+    "storage_bucket": "mototransflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111813854286:android:9737b2171668b110daaf1f",
+        "android_client_info": {
+          "package_name": "com.adrenod.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111813854286-36qm2m4k7fb2pobbi1dgt6njvbj72olo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.driver",
+            "certificate_hash": "f304ba614ca5a8e139a87e54c7567d15c512fea2"
+          }
+        },
+        {
+          "client_id": "111813854286-58absssdvhs3lgdtrlgsu8fsauag3k0q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.driver",
+            "certificate_hash": "d35de3c76a0adaa376d208aff1abd05b2f470fc1"
+          }
+        },
+        {
+          "client_id": "111813854286-6b2qi2ch4c2qmh9j79gkukk931p1hjb6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.driver",
+            "certificate_hash": "89c2b87fe32576d3100305fdb5794b3acb2254d1"
+          }
+        },
+        {
+          "client_id": "111813854286-79283f0ak4re3dadbie6tbk775570l9o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.driver",
+            "certificate_hash": "f07090c22c6c15a28bfac88f7ecf564e7e1e4fcb"
+          }
+        },
+        {
+          "client_id": "111813854286-e83t5noicg73r1skot88l7l9jcjp2809.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.driver",
+            "certificate_hash": "0db7098a1ae6663895a3c0259e0a6d596aee420d"
+          }
+        },
+        {
+          "client_id": "111813854286-ei4dbgi5flo6cp3k4l3ikomcf9qneqbd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.driver",
+            "certificate_hash": "09388b26643d18b4387c56ce57ffa4d40a5e1923"
+          }
+        },
+        {
+          "client_id": "111813854286-mcsgh20qld980om9glj9n8u29efbvcai.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.driver",
+            "certificate_hash": "c0260e09c384565bb28f9f001911ab70f96ba9c7"
+          }
+        },
+        {
+          "client_id": "111813854286-guioqspulp56bpqo1ohtfpckvpru7fad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk8Lu3HDXTJwjhBX9WKMZdtY3g_yMOy5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111813854286-guioqspulp56bpqo1ohtfpckvpru7fad.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "111813854286-40fmqbil4d1g8kv6v6rsk0l9d4skf3sv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.adrenod.driver",
+                "app_store_id": "6443680650"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111813854286:android:c49b0aa4a0669b3bdaaf1f",
+        "android_client_info": {
+          "package_name": "com.adrenod.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111813854286-02qs3up5t39sssjaclb2ah8pfi1r63tr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.user",
+            "certificate_hash": "a965444c3a813fa7a5b6031f50f76b133ea53447"
+          }
+        },
+        {
+          "client_id": "111813854286-d4h5mrqqdu2aick0be14455mivq9r0a4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.user",
+            "certificate_hash": "89c2b87fe32576d3100305fdb5794b3acb2254d1"
+          }
+        },
+        {
+          "client_id": "111813854286-t0b3dr1fj6g8f8s4ec5g57bvc44bijd6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.user",
+            "certificate_hash": "f07090c22c6c15a28bfac88f7ecf564e7e1e4fcb"
+          }
+        },
+        {
+          "client_id": "111813854286-vclrmk734ttoj6b6teu3783n29fp3v25.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.user",
+            "certificate_hash": "c0260e09c384565bb28f9f001911ab70f96ba9c7"
+          }
+        },
+        {
+          "client_id": "111813854286-vt10pekpgiliasrlm76tifdh01lc3idf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.adrenod.user",
+            "certificate_hash": "d35de3c76a0adaa376d208aff1abd05b2f470fc1"
+          }
+        },
+        {
+          "client_id": "111813854286-guioqspulp56bpqo1ohtfpckvpru7fad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk8Lu3HDXTJwjhBX9WKMZdtY3g_yMOy5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111813854286-guioqspulp56bpqo1ohtfpckvpru7fad.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "111813854286-40fmqbil4d1g8kv6v6rsk0l9d4skf3sv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.adrenod.driver",
+                "app_store_id": "6443680650"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
