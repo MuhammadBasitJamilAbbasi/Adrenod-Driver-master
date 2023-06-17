@@ -5,8 +5,9 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart' as geolocs;
-import 'package:location/location.dart';
+import 'package:location/location.dart'as loc;
 import 'package:adrenod_driver/pages/NavigatorPages/editprofile.dart';
 import 'package:adrenod_driver/pages/NavigatorPages/history.dart';
 import 'package:adrenod_driver/pages/NavigatorPages/makecomplaint.dart';
@@ -44,6 +45,7 @@ dynamic platform;
 dynamic pref;
 String isActive = '';
 double duration = 0.0;
+int maphitcount=0;
 AudioCache audioPlayer = AudioCache();
 AudioPlayer audioPlayers = AudioPlayer();
 String audio = 'audio/notification_sound.mp3';
@@ -56,7 +58,7 @@ String ischeckownerordriver = '';
 String url = 'https://adrenod.com/'; //add '/' at the end of url as 'yourwebsite.com/'
 // String url = 'https://mymtadminnew.mototransnow.com/'; //add '/' at the end of url as 'yourwebsite.com/'
 // String url = 'https://adrenod.scriptro.com/'; //add '/' at the end of url as 'yourwebsite.com/'
-String mapkey = 'AIzaSyCMYT7CL9ZlI7Kwnvtb0sGMZg7rGtMYy6g';
+String mapkey = 'AIzaSyCoSY5ObOldlyJwC-42GTnQZfBRdW0pSHw';
 String mapStyle = '';
 
 getDetailsOfDevice() async {
@@ -266,6 +268,11 @@ uploadDocs() async {
   }
   return result;
 }
+
+
+
+
+
 
 uploadFleetDocs(fleetid) async {
   dynamic result;
@@ -1355,7 +1362,7 @@ const platforms = MethodChannel('flutter.app/awake');
 
 //update driver location in firebase
 
-Location location = Location();
+loc.Location location = loc.Location();
 
 currentPositionUpdate() async {
   geolocs.LocationPermission permission;
@@ -1680,6 +1687,7 @@ etaRequest() async {
 //geocodeing location
 
 geoCodingForLatLng(placeid) async {
+  print(" Hits :"+(maphitcount+1).toString());
   dynamic location;
   try {
     var response = await http.get(Uri.parse(
@@ -1758,9 +1766,11 @@ getAutoAddress(input, sessionToken, lat, lng) async {
   try {
     if (userDetails['enable_country_restrict_on_map'] == '1' &&
         userDetails['country_code'] != null) {
+      print(" Hits :"+(maphitcount+1).toString());
       response = await http.get(Uri.parse(
           'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&library=places&location=$lat%2C$lng&radius=2000&components=country:$countryCode&key=$mapkey&sessiontoken=$sessionToken'));
     } else {
+      print(" Hits :"+(maphitcount+1).toString());
       response = await http.get(Uri.parse(
           'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&library=places&key=$mapkey&sessiontoken=$sessionToken'));
     }
@@ -2043,22 +2053,27 @@ tripStartDispatcher() async {
 
 geoCoding(double lat, double lng) async {
   dynamic result;
-  try {
-    var response = await http.get(Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$mapkey'));
+  //try {
+    // var response = await http.get(Uri.parse(
+    //     'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$mapkey'));
+    //
+    // if (response.statusCode == 200) {
+    //   var val = jsonDecode(response.body);
+    //   result = val['results'][0]['formatted_address'];
+    // } else {
+    //   debugPrint(response.body);
+    //   result = '';
+    // }
+        final List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+        if (placemarks != null && placemarks.isNotEmpty) {
+          final Placemark placemark = placemarks.first;
+          result = placemark.name.toString()+" "+placemark.street.toString()+" "+placemark.locality.toString()+" "+placemark.country.toString();
 
-    if (response.statusCode == 200) {
-      var val = jsonDecode(response.body);
-      result = val['results'][0]['formatted_address'];
-    } else {
-      debugPrint(response.body);
-      result = '';
-    }
-  } catch (e) {
-    if (e is SocketException) {
-      internet = false;
-      result = 'no internet';
-    }
+          // } catch (e) {
+  //   if (e is SocketException) {
+  //     internet = false;
+  //     result = 'no internet';
+  //   }
   }
   return result;
 }
@@ -2165,7 +2180,9 @@ getPolylines() async {
   String dropLng = driverReq['drop_lng'].toString();
   try {
     var response = await http.get(Uri.parse(
-        'https://maps.googleapis.com/maps/api/directions/json?origin=$pickLat%2C$pickLng&destination=$dropLat%2C$dropLng&avoid=ferries|indoor&transit_mode=bus&mode=driving&key=$mapkey'));
+        'https://maps.googleapis.com/maps/api/directions/'
+            'json?origin=$pickLat%2C$pickLng&destination=$dropLat%2C$dropLng&avoid='
+            'ferries|indoor&transit_mode=bus&mode=driving&key=$mapkey'));
     if (response.statusCode == 200) {
       // printWrapped(response.body);
       steps =
@@ -2188,10 +2205,12 @@ getPolylines() async {
 
 getPolylineshistory({pickLat, pickLng, dropLat, dropLng}) async {
   polyList.clear();
-
+  print(" Hits :"+(maphitcount+1).toString());
   try {
     var response = await http.get(Uri.parse(
-        'https://maps.googleapis.com/maps/api/directions/json?origin=$pickLat%2C$pickLng&destination=$dropLat%2C$dropLng&avoid=ferries|indoor&transit_mode=bus&mode=driving&key=$mapkey'));
+        'https://maps.googleapis.com/maps/api/directions/json?origin'
+            '=$pickLat%2C$pickLng&destination=$dropLat%2C$dropLng'
+            '&avoid=ferries|indoor&transit_mode=bus&mode=driving&key=$mapkey'));
     if (response.statusCode == 200) {
       var steps =
           jsonDecode(response.body)['routes'][0]['overview_polyline']['points'];

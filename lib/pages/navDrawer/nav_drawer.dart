@@ -13,8 +13,7 @@ import 'package:adrenod_driver/pages/NavigatorPages/makecomplaint.dart';
 import 'package:adrenod_driver/pages/NavigatorPages/myroutebookings.dart';
 import 'package:adrenod_driver/pages/NavigatorPages/referral.dart';
 import 'package:adrenod_driver/pages/NavigatorPages/selectlanguage.dart';
-import 'package:adrenod_driver/pages/NavigatorPages/sos.dart';
-import 'package:adrenod_driver/pages/NavigatorPages/updatevehicle.dart';
+
 import 'package:adrenod_driver/pages/NavigatorPages/walletpage.dart';
 import 'package:adrenod_driver/pages/loadingPage/loading.dart';
 import 'package:adrenod_driver/pages/onTripPage/map_page.dart';
@@ -947,51 +946,51 @@ class _NavDrawerState extends State<NavDrawer> {
                                     ),
 
                                     //sos
-                                    userDetails['role'] != 'owner'
-                                        ? InkWell(
-                                            onTap: () async {
-                                              var nav = await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const Sos()));
-
-                                              if (nav) {
-                                                setState(() {});
-                                              }
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.all(
-                                                  media.width * 0.025),
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                    'assets/images/sos.png',
-                                                    fit: BoxFit.contain,
-                                                    width: media.width * 0.075,
-                                                  ),
-                                                  SizedBox(
-                                                    width: media.width * 0.025,
-                                                  ),
-                                                  SizedBox(
-                                                    width: media.width * 0.55,
-                                                    child: Text(
-                                                      languages[choosenLanguage]
-                                                          ['text_sos'],
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: GoogleFonts.roboto(
-                                                          fontSize:
-                                                              media.width *
-                                                                  sixteen,
-                                                          color: textColor),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                        : Container(),
+                                    // userDetails['role'] != 'owner'
+                                    //     ? InkWell(
+                                    //         onTap: () async {
+                                    //           var nav = await Navigator.push(
+                                    //               context,
+                                    //               MaterialPageRoute(
+                                    //                   builder: (context) =>
+                                    //                       const Sos()));
+                                    //
+                                    //           if (nav) {
+                                    //             setState(() {});
+                                    //           }
+                                    //         },
+                                    //         child: Container(
+                                    //           padding: EdgeInsets.all(
+                                    //               media.width * 0.025),
+                                    //           child: Row(
+                                    //             children: [
+                                    //               Image.asset(
+                                    //                 'assets/images/sos.png',
+                                    //                 fit: BoxFit.contain,
+                                    //                 width: media.width * 0.075,
+                                    //               ),
+                                    //               SizedBox(
+                                    //                 width: media.width * 0.025,
+                                    //               ),
+                                    //               SizedBox(
+                                    //                 width: media.width * 0.55,
+                                    //                 child: Text(
+                                    //                   languages[choosenLanguage]
+                                    //                       ['text_sos'],
+                                    //                   overflow:
+                                    //                       TextOverflow.ellipsis,
+                                    //                   style: GoogleFonts.roboto(
+                                    //                       fontSize:
+                                    //                           media.width *
+                                    //                               sixteen,
+                                    //                       color: textColor),
+                                    //                 ),
+                                    //               )
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //       )
+                                    //     : Container(),
 
                                     //language
                                     InkWell(

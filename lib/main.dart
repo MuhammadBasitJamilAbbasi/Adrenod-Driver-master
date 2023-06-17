@@ -1,4 +1,4 @@
-import 'package:adrenod_driver/pages/payment/easypaswpayment.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:adrenod_driver/functions/functions.dart';
@@ -20,9 +20,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     platform = Theme.of(context).platform;
     return GestureDetector(
         onTap: () {
@@ -47,7 +49,45 @@ class MyApp extends StatelessWidget {
              ))
             ),
 
-            home: const LoadingPage()));
+            home:  const LoadingPage()));
 
   }
+
+
+
 }
+
+
+
+class removeall extends StatefulWidget {
+  @override
+  State<removeall> createState() => _removeallState();
+}
+
+
+class _removeallState extends State<removeall> {
+  Future<void> deleteAllRequests() async {
+    try {
+      await FirebaseDatabase.instance
+          .ref().child('requests').set(null);
+      print('All requests deleted successfully.');
+    } catch (error) {
+      print('Failed to delete requests: $error');
+      rethrow;
+    }
+  }
+    @override
+    Widget build(BuildContext context) {
+      // TODO: implement build
+      return Scaffold(
+        body: SafeArea(
+          child: ElevatedButton(
+            onPressed: (){
+              deleteAllRequests();
+            },
+            child: Text('Delete All Requests'),
+          ),
+        ),
+      );
+    }
+  }

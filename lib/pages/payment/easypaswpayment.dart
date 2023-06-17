@@ -87,6 +87,7 @@ class _EasypasaState extends State<Easypasa> {
       'Content-Type': 'application/json',
       'Credentials': 'SHV6YWlmYUtoYW46NTY0YjFlODczOWJjNjkwNjIyZGUwN2M1YTgxZmU2Yg==',
     };
+    // flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 
 
     String orderid = generateOrderId();

@@ -94,7 +94,7 @@ class _AboutState extends State<About> {
                         InkWell(
                           onTap: () {
                             openBrowser(
-                                'https://adrenod.com/privacy');
+                                'https://privacy.adrenod.com/');
                           },
                           child: Text(
                             languages[choosenLanguage]['text_privacy'],

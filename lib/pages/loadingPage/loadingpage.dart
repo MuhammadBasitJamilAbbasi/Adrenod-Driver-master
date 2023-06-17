@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:adrenod_driver/pages/language/languages.dart';
@@ -12,11 +13,13 @@ import 'package:adrenod_driver/pages/noInternet/nointernet.dart';
 import 'package:adrenod_driver/pages/vehicleInformations/docs_onprocess.dart';
 import 'package:adrenod_driver/pages/vehicleInformations/upload_docs.dart';
 import 'package:adrenod_driver/widgets/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../styles/styles.dart';
 import '../../functions/functions.dart';
 import 'package:http/http.dart' as http;
 
 import '../login/signupmethod.dart';
+
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -38,6 +41,8 @@ class _LoadingPageState extends State<LoadingPage> {
 
   //navigate
   navigate() {
+
+
     if (userDetails['uploaded_document'] == false) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Docs()));
@@ -57,11 +62,64 @@ class _LoadingPageState extends State<LoadingPage> {
           (route) => false);
     }
   }
-
+  Future<bool> fetchBlockResponse(BuildContext context) async {
+    var url = Uri.parse('https://adrenod.com/blockApp/blockapp_vendor.php');
+    var response = await http.post(url, body: {'check': '1'});// Replace with your actual API endpoint
+    if (response.statusCode == 200) {
+      var responseData = json.decode(response.body);
+      var title = responseData['title'];
+      var message = responseData['message'];
+      var action = responseData['action'];
+      var buttontext=responseData['button'];
+      if (title != null && message != null) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            if (action != null) {
+              return AlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: [
+                  TextButton(
+                    child: Text(buttontext),
+                    onPressed: () {
+                      // Handle the action link
+                      launch(action); // Assuming you're using the url_launcher package
+                    },
+                  ),
+                ],
+              );
+            } else {
+              return AlertDialog(
+                title: Text(title),
+                content: Text(message),
+                actions: [
+                  TextButton(
+                    child: Text('Close'),
+                    onPressed: () {
+                      // Close the app
+                      SystemNavigator.pop();
+                    },
+                  ),
+                ],
+              );
+            }
+          },
+        );
+        return false;
+      }else{
+        getLanguageDone();
+        return true;
+      }
+    }else
+      {
+        getLanguageDone();
+      }
+    return true;
+  }
   @override
   void initState() {
-    getLanguageDone();
-
+    fetchBlockResponse(context);
     super.initState();
   }
 
@@ -121,16 +179,16 @@ class _LoadingPageState extends State<LoadingPage> {
         }
         //if user is not login in this device
         else if (val == '2') {
-          Future.delayed(const Duration(seconds: 2), () {
+
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const SignupMethod()));
-          });
+
         } else {
           //user installing first time and didnt yet choosen language
-          Future.delayed(const Duration(seconds: 2), () {
+
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const Languages()));
-          });
+
         }
       } else {
         setState(() {});

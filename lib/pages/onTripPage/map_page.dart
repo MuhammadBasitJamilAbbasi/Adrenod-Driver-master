@@ -4,18 +4,22 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:geocoding/geocoding.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:location_geocoder/location_geocoder.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:location/location.dart';
+import 'package:location/location.dart' as locmy;
 import 'package:adrenod_driver/functions/functions.dart';
 import 'package:adrenod_driver/functions/geohash.dart';
 import 'package:adrenod_driver/functions/notifications.dart';
 import 'package:adrenod_driver/pages/NavigatorPages/notification.dart';
 import 'package:adrenod_driver/pages/chatPage/chat_page.dart';
 import 'package:adrenod_driver/pages/onTripPage/droplocation.dart';
+
+
 import 'package:adrenod_driver/pages/onTripPage/invoice.dart';
 import 'package:adrenod_driver/pages/loadingPage/loading.dart';
 import 'package:adrenod_driver/pages/login/login.dart';
@@ -68,13 +72,13 @@ class _MapsState extends State<Maps>
   bool _dropMarkerDone = false;
 
   late geolocator.LocationPermission permission;
-  Location location = Location();
+  locmy.Location location = locmy.Location();
   String state = '';
   dynamic _controller;
   Animation<double>? _animation;
   dynamic animationController;
   String _cancellingError = '';
-  double mapPadding = 0.0;
+  double mapPadding = 0.0; 
 
   String _cancelReason = '';
   bool _locationDenied = false;
@@ -113,7 +117,7 @@ class _MapsState extends State<Maps>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     myMarkers = [];
-    getaddressfromlatlang();
+    getAddressFromLatLang();
     addressList.clear();
     show = true;
     filtericon = 0;
@@ -356,69 +360,103 @@ class _MapsState extends State<Maps>
     }
 
 
-  Future<double> getLatLang(String Pickup,String Dropout) async {
-    const _apiKey = "AIzaSyCMYT7CL9ZlI7Kwnvtb0sGMZg7rGtMYy6g";
+  // Future<double> getLatLang(String Pickup,String Dropout) async {
+  //   const _apiKey = "AIzaSyCMYT7CL9ZlI7Kwnvtb0sGMZg7rGtMYy6g";
+  //
+  //   late LocatitonGeocoder geocoder = LocatitonGeocoder(_apiKey);
+  //
+  //   try {
+  //     final address = await geocoder.findAddressesFromQuery(Pickup);
+  //     var message = address.first.coordinates.toString();
+  //     // print("olla lalal");
+  //     // print(message);
+  //     final split = message.split(',');
+  //     final Map<int, String> values = {
+  //       for (int i = 0; i < split.length; i++)
+  //         i: split[i]
+  //     };
+  //     // {0: grubs, 1:  sheep}
+  //
+  //     final value1 = values[0];
+  //     final value2 = values[1];
+  //
+  //     // print(value1);  // grubs
+  //     // print(value2);  //  sheep
+  //     double newdbl = double.parse(value1!.replaceAll(RegExp(r'[^0-9.]'),''));
+  //     double newdbl1 = double.parse(value2!.replaceAll(RegExp(r'[^0-9.]'),''));
+  //     // print(newdbl);
+  //     // print(newdbl1);
+  //     //to get the data from text widget
+  //     // Text txt = Text( userDetails['name'],);
+  //     // print(txt.data);
+  //
+  //
+  //     final address1 = await geocoder.findAddressesFromQuery(Dropout);
+  //     var message1 = address1.first.coordinates.toString();
+  //     final split1 = message1.split(',');
+  //     final Map<int, String> values1 = {
+  //       for (int i = 0; i < split1.length; i++)
+  //         i: split1[i]
+  //     };
+  //     // {0: grubs, 1:  sheep}
+  //
+  //     final value3 = values1[0];
+  //     final value4 = values1[1];
+  //     double newdbl3 = double.parse(value3!.replaceAll(RegExp(r'[^0-9.]'),''));
+  //     double newdbl4 = double.parse(value4!.replaceAll(RegExp(r'[^0-9.]'),''));
+  //     // print(newdbl3);
+  //     // print(newdbl4);
+  //
+  //     // null
+  //     late double distanceInMeters = Geolocator.distanceBetween(newdbl, newdbl1, newdbl3, newdbl4);
+  //     late double distanceInKiloMeters = distanceInMeters / 1000;
+  //     late double roundDistanceInKM = double.parse((distanceInKiloMeters).toStringAsFixed(2));
+  //     // print(roundDistanceInKM);
+  //     return roundDistanceInKM;
+  //
+  //   } catch (e) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //   const SnackBar(
+  //     //     content: Text('SOMETING WENT WRONG'),
+  //     //   ),
+  //     // );
+  //     rethrow;
+  //   }
+  // }
 
-    late LocatitonGeocoder geocoder = LocatitonGeocoder(_apiKey);
 
+
+  Future<double> getLatLang(String pickup, String dropout) async {
     try {
-      final address = await geocoder.findAddressesFromQuery(Pickup);
-      var message = address.first.coordinates.toString();
-      // print("olla lalal");
-      // print(message);
-      final split = message.split(',');
-      final Map<int, String> values = {
-        for (int i = 0; i < split.length; i++)
-          i: split[i]
-      };
-      // {0: grubs, 1:  sheep}
+      final geocoding = GeocodingPlatform.instance;
+      final geolocator = GeolocatorPlatform.instance;
 
-      final value1 = values[0];
-      final value2 = values[1];
+      final pickupAddresses = await geocoding.locationFromAddress(pickup);
 
-      // print(value1);  // grubs
-      // print(value2);  //  sheep
-      double newdbl = double.parse(value1!.replaceAll(RegExp(r'[^0-9.]'),''));
-      double newdbl1 = double.parse(value2!.replaceAll(RegExp(r'[^0-9.]'),''));
-      // print(newdbl);
-      // print(newdbl1);
-      //to get the data from text widget
-      // Text txt = Text( userDetails['name'],);
-      // print(txt.data);
+      final pickupLatitude = pickupAddresses.first.latitude;
+      final pickupLongitude = pickupAddresses.first.longitude;
 
+      final dropoutAddresses = await geocoding.locationFromAddress(dropout);
+     // final dropoutCoordinates = dropoutAddresses.first!.coordinates;
+      final dropoutLatitude = dropoutAddresses.first.latitude;
+      final dropoutLongitude = dropoutAddresses.first.longitude;
 
-      final address1 = await geocoder.findAddressesFromQuery(Dropout);
-      var message1 = address1.first.coordinates.toString();
-      final split1 = message1.split(',');
-      final Map<int, String> values1 = {
-        for (int i = 0; i < split1.length; i++)
-          i: split1[i]
-      };
-      // {0: grubs, 1:  sheep}
+      final distanceInMeters = geolocator.distanceBetween(
+        pickupLatitude,
+        pickupLongitude,
+        dropoutLatitude,
+        dropoutLongitude,
+      );
 
-      final value3 = values1[0];
-      final value4 = values1[1];
-      double newdbl3 = double.parse(value3!.replaceAll(RegExp(r'[^0-9.]'),''));
-      double newdbl4 = double.parse(value4!.replaceAll(RegExp(r'[^0-9.]'),''));
-      // print(newdbl3);
-      // print(newdbl4);
+      final distanceInKilometers = distanceInMeters / 1000;
+      final roundDistanceInKM = double.parse(distanceInKilometers.toStringAsFixed(2));
 
-      // null
-      late double distanceInMeters = Geolocator.distanceBetween(newdbl, newdbl1, newdbl3, newdbl4);
-      late double distanceInKiloMeters = distanceInMeters / 1000;
-      late double roundDistanceInKM = double.parse((distanceInKiloMeters).toStringAsFixed(2));
-      // print(roundDistanceInKM);
       return roundDistanceInKM;
-
     } catch (e) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     content: Text('SOMETING WENT WRONG'),
-      //   ),
-      // );
       rethrow;
     }
   }
+
   getLocationService() async {
     await location.requestService();
     getLocs();
@@ -5518,30 +5556,57 @@ class _MapsState extends State<Maps>
     animationController = null;
   }
 
-      Future<void> getaddressfromlatlang() async {
-        loc = await geolocator.Geolocator.getCurrentPosition(
-            desiredAccuracy: geolocator.LocationAccuracy.low);
-        double lat1=double.parse(loc.latitude.toString());
-        double lan1=double.parse(loc.longitude.toString());
+      // Future<void> getaddressfromlatlang() async {
+      //   loc = await geolocator.Geolocator.getCurrentPosition(
+      //       desiredAccuracy: geolocator.LocationAccuracy.low);
+      //   double lat1=double.parse(loc.latitude.toString());
+      //   double lan1=double.parse(loc.longitude.toString());
+      //
+      //   const _apiKey = "AIzaSyCMYT7CL9ZlI7Kwnvtb0sGMZg7rGtMYy6g";
+      //   // const _apiKey = "AIzaSyC3JcZpdo2fbgCQIskws-YgzJz8o1U6bRY";
+      //   late LocatitonGeocoder geocoder = LocatitonGeocoder(_apiKey);
+      //   try {
+      //     final address = await geocoder
+      //         .findAddressesFromCoordinates(Coordinates(lat1, lan1));
+      //     UserCureentLocation = address.first.addressLine;
+      //     // print(UserCureentLocation);
+      //   } catch (e) {
+      //     // ScaffoldMessenger.of(context).showSnackBar(
+      //     //   const SnackBar(
+      //     //     content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
+      //     //   ),
+      //     // );
+      //     rethrow;
+      //   }
+      //
+      // }
 
-        const _apiKey = "AIzaSyCMYT7CL9ZlI7Kwnvtb0sGMZg7rGtMYy6g";
-        // const _apiKey = "AIzaSyC3JcZpdo2fbgCQIskws-YgzJz8o1U6bRY";
-        late LocatitonGeocoder geocoder = LocatitonGeocoder(_apiKey);
-        try {
-          final address = await geocoder
-              .findAddressesFromCoordinates(Coordinates(lat1, lan1));
-          UserCureentLocation = address.first.addressLine;
-          // print(UserCureentLocation);
-        } catch (e) {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   const SnackBar(
-          //     content: Text('SOMETING WENT WRONG\nDID YOU ADD API KEY '),
-          //   ),
-          // );
-          rethrow;
-        }
 
+  Future<void> getAddressFromLatLang() async {
+    try {
+      loc = await Geolocator.getCurrentPosition(
+        desiredAccuracy: geolocator.LocationAccuracy.low,);
+      double latitude = loc.latitude;
+      double longitude = loc.longitude;
+      final List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      if (placemarks != null && placemarks.isNotEmpty) {
+        final Placemark placemark = placemarks.first;
+        UserCureentLocation  = placemark.name.toString()+" "+placemark.street.toString()+" "+placemark.locality.toString()+" "+placemark.country.toString();
+
+        print(UserCureentLocation);
+      } else {
+        throw Exception('No address found');
       }
+    } catch (e) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text('SOMETHING WENT WRONG\nDID YOU ADD API KEY'),
+      //   ),
+      // );
+      rethrow;
+    }
+  }
+
 
 
 

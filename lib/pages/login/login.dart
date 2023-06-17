@@ -420,7 +420,7 @@ class _LoginState extends State<Login> {
                                   InkWell(
                                     onTap: () {
                                       openBrowser(
-                                          'https://adrenod.com/privacy');
+                                          'https://privacy.adrenod.com/');
                                     },
                                     child: Text(
                                       languages[choosenLanguage]
